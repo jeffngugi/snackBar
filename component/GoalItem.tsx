@@ -33,8 +33,8 @@ const styles = StyleSheet.create({
     marginVertical: 5,
   },
   verticleLine: {
-    width: 1,
-    backgroundColor: '#909090',
+    width: 10,
+    backgroundColor: 'black',
   },
   leftSide: {
     flex: 1,

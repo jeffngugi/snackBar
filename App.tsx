@@ -107,6 +107,7 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     PaddingHorizontal: 16,
+    backgroundColor: '#333399',
   },
   button: {
     backgroundColor: '#00e68a',
@@ -132,6 +133,8 @@ const styles = StyleSheet.create({
     flex: 5,
     padding: 5,
     paddingVertical: 10,
+    borderTopRightRadius: 20,
+    borderTopLeftRadius: 20,
   },
   snackBarContainer: {
     position: 'absolute',

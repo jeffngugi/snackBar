@@ -1,4 +1,4 @@
-import {StyleSheet, Text} from 'react-native';
+import {StyleSheet, Text, View} from 'react-native';
 import React from 'react';
 
 const AppHero = () => {
@@ -23,5 +23,11 @@ const styles = StyleSheet.create({
   },
   text: {
     color: 'white',
+  },
+  bottom: {
+    backgroundColor: 'red',
+    borderTopLeftRadius: 10,
+    borderTopRightRadius: 10,
+    height: 100,
   },
 });
