@@ -5,11 +5,25 @@ import {
   StyleSheet,
   Pressable,
   Animated,
+  Image,
 } from 'react-native';
 import React, {useState} from 'react';
 import AppHero from './component/AppHero';
-// import SnackBar from './component/SnackBar';
-// import SnackBar1 from './component/SnackBar1';
+import GoalItem from './component/GoalItem';
+const image = require('./assets/x.png');
+
+const goals = [
+  {
+    id: 1,
+    goal: 'Goal 1',
+    amount: 'KES 10000',
+  },
+  {
+    id: 2,
+    goal: 'Goal 1',
+    amount: 'KES 10000',
+  },
+];
 
 const App = () => {
   const initialText =
@@ -17,22 +31,37 @@ const App = () => {
   const [userText, setUserText] = useState(initialText);
 
   const fadeAnim = React.useRef(new Animated.Value(0)).current;
+  const positition = React.useRef(new Animated.Value(-100)).current;
 
-  const fadeIn = () => {
+  const showSnackBar = () => {
     setUserText(initialText);
-    Animated.timing(fadeAnim, {
-      toValue: 1,
-      duration: 600,
-      useNativeDriver: true,
-    }).start();
+    Animated.parallel([
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 600,
+        useNativeDriver: false,
+      }),
+      Animated.timing(positition, {
+        toValue: 0,
+        duration: 500,
+        useNativeDriver: false,
+      }),
+    ]).start();
   };
 
-  const fadeOut = () => {
-    Animated.timing(fadeAnim, {
-      toValue: 0,
-      duration: 400,
-      useNativeDriver: true,
-    }).start();
+  const hideSnack = () => {
+    Animated.sequence([
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 800,
+        useNativeDriver: false,
+      }),
+      Animated.timing(positition, {
+        toValue: -100,
+        duration: 1000,
+        useNativeDriver: false,
+      }),
+    ]).start();
   };
 
   return (
@@ -42,26 +71,30 @@ const App = () => {
           <AppHero />
         </View>
         <View style={styles.listContainer}>
-          <Text> Second text</Text>
+          {goals.map(item => (
+            <GoalItem item={item} key={item.id} />
+          ))}
         </View>
       </View>
-      <Pressable style={styles.button} onPress={fadeIn}>
-        <Text style={styles.btnTxt}>Show snackbar</Text>
+      <Pressable style={styles.button} onPress={showSnackBar}>
+        <Text style={styles.btnTxt}> Show snackbar</Text>
       </Pressable>
 
       <Animated.View
         style={[
           styles.snackBarContainer,
           {
-            // Bind opacity to animated value
             opacity: fadeAnim,
+            top: positition,
           },
         ]}>
-        <Pressable onPress={() => setUserText('User clicked snackbar')}>
+        <Pressable
+          onPress={() => setUserText('User clicked snackbar')}
+          style={{width: '95%'}}>
           <Text style={styles.txt}>{userText}</Text>
         </Pressable>
-        <Pressable style={{marginRight: 10}} onPress={fadeOut}>
-          <Text> X </Text>
+        <Pressable onPress={hideSnack}>
+          <Image source={image} style={styles.img} />
         </Pressable>
       </Animated.View>
     </SafeAreaView>
@@ -95,8 +128,10 @@ const styles = StyleSheet.create({
     fontSize: 15,
   },
   listContainer: {
-    backgroundColor: 'white',
+    backgroundColor: '#f2f2f2',
     flex: 5,
+    padding: 5,
+    paddingVertical: 10,
   },
   snackBarContainer: {
     position: 'absolute',
@@ -104,18 +139,22 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     alignItems: 'center',
     left: 0,
-    top: 0,
     right: 0,
     paddingLeft: 10,
     paddingRight: 10,
     marginHorizontal: 10,
     marginTop: 10,
-    paddingVertical: 5,
+    paddingVertical: 10,
     borderRadius: 4,
     justifyContent: 'space-between',
   },
   txt: {
     color: 'white',
     flex: 1,
+  },
+  img: {
+    tintColor: 'white',
+    width: 24,
+    height: 24,
   },
 });
